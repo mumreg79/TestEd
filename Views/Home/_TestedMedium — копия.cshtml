@@ -1,0 +1,46 @@
+﻿@{
+    //var MediumList = (List<string>)ViewData["Mediums"];
+
+    //var req = ViewData.Select(x => x.Key).Contains("Results");
+    var resTest = (List<string>)ViewData["Mediums"];
+}
+    <table>
+
+@if (ViewData.Select(x => x.Key).Contains("Results"))
+{
+    <tr>
+        <th style="border-style: solid">
+            Экстрасенс
+        </th>
+        <th class="crntRes" style="border-style: solid">
+            Текущий ответ
+        </th>
+        <th style="border-style: solid">
+            Достоверность для Вас
+        </th>
+        <th style="border-style: solid">
+            Общая достоверность
+        </th>
+    </tr>
+}
+@foreach (string medium in (List<string>)ViewData["Mediums"])
+{   
+    <tr>
+        <td>
+            @Html.DisplayFor(x => medium)
+        </td>
+        @if (ViewData.Select(x => x.Key).Contains("Results"))
+        {
+            <td class="crntRes">
+                @Html.DisplayFor(x => medium)
+            </td>
+            <td>
+                @Html.DisplayFor(x => medium)
+            </td>
+            <td>
+                @Html.DisplayFor(x => medium)
+            </td>
+        }
+    </tr>
+}
+</table>

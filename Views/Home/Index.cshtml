@@ -1,0 +1,21 @@
+﻿@{
+    var dict = new ViewDataDictionary();
+    dict.Add("Mediums", ViewData["Mediums"]);
+}
+<h2>
+    Тест экстрасенсов</h2>
+<h3>
+    Уважаемый пользователь! @*@ViewData["SesionID"]*@
+    <br />
+    Вам предстоит провести тестирование, на наличие экстрасенсорных
+    способностей, следующих людей:
+</h3>
+<div id="updDiv">
+    @Html.Partial("_TestedMedium", dict)    
+</div>
+@Ajax.ActionLink("История введенных Вами чисел", "History", 
+                        new { forWhom = -1 },
+                        new AjaxOptions { @UpdateTargetId = "history" })
+<hr />
+<div id="history"></div>
+

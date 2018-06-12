@@ -1,0 +1,76 @@
+﻿@model TestEdison.Models.Request
+@{
+    var KeyRec = ViewData["KeyReq"];
+}
+<table>
+    @if (Model != null && Model.MediumsResult != null)
+    {
+        <tr>
+            <th style="border-style: solid">
+                Экстрасенс
+            </th>
+            <th class="crntRes" style="border-style: solid">
+                Текущий ответ
+            </th>
+            <th style="border-style: solid">
+                Достоверность для Вас
+            </th>
+            <th style="border-style: solid">
+                Общая достоверность
+            </th>
+        </tr>
+    }
+    @for (int i = 0; i < ((List<string>)ViewData["Mediums"]).Count(); i++)
+    {   
+        <tr>
+            @if (Model != null && Model.MediumsResult != null)
+            {
+                <td>
+                    @Ajax.ActionLink(((List<string>)ViewData["Mediums"])[i], "History",
+
+                                    new { forWhom = i },
+                                    new AjaxOptions { @UpdateTargetId = "history" })
+                </td>
+                <td class="crntRes">
+                    @Html.DisplayFor(x => Model.MediumsResult[i].MediumData)
+                </td>
+                <td>
+                    @Html.DisplayFor(x => ((List<int>)ViewData["Stat"])[i])
+                </td>
+                <td>
+                    @Html.DisplayFor(x => ((List<int>)ViewData["StatFull"])[i])
+                </td>
+            }
+            else
+            {
+                <td>
+                    @Html.DisplayFor(x => ((List<string>)ViewData["Mediums"])[i])
+                </td>
+            }
+        </tr>
+    }
+</table>
+<h3>
+    @if (ViewData.Select(x => x.Key).Contains("VarReq") &&
+         ViewData["VarReq"] == "Medium")
+    {
+        using (Ajax.BeginForm("TestMediumResult", new AjaxOptions
+        {
+            @UpdateTargetId = "updDiv",
+            @OnSuccess = "$('#history').empty()"
+        }))
+        {
+        @Html.HiddenFor(x => KeyRec)
+        @Html.Raw("Введите задуманное число: ")
+        @Html.EditorFor(x => x.ReqValue)
+        <input type="submit" value="Проверить" />
+        }
+    }
+    else
+    {
+        @Html.Raw("Загадайте двузначное число: ")
+        @Ajax.ActionLink(" Загадать! ", "StartTest", new AjaxOptions { @UpdateTargetId = "updDiv",
+                                                                       @OnSuccess = "$('#history').empty()"})
+    }
+</h3>
+@Html.Raw(ViewData["ValidError"])
